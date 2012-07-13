@@ -29,8 +29,10 @@ end
 
 env = {
   :version => 0.1,
-  :repository => 'git',
-  :path => 'master',
+  :repository => {
+    :type =>  'cvs',
+    :path => 'master',
+  },
   :exec => 'rake',
   :cmd => :ping
 }
