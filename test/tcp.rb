@@ -1,9 +1,9 @@
 require 'socket'
 require 'middleware'
-require File.join(File.dirname(__FILE__), 'adapters/commands')
-require File.join(File.dirname(__FILE__), 'adapters/executors')
-require File.join(File.dirname(__FILE__), 'adapters/repositories')
-require File.join(File.dirname(__FILE__), 'adapters/reporters')
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'adapters/commands')
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'adapters/executors')
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'adapters/repositories')
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'adapters/reporters')
 
 server = TCPServer.new 3333
 loop do
