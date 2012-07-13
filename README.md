@@ -13,15 +13,16 @@ Some of the parent middlewares (Commands) also use middlewares (commands/ping.rb
 ## Example
 On the middleware chain Commands will also chain through its middlewares if the :cmd env is supplied.
 ```
-# e.g env = { :cmd => :ping }
-Commands
-  -> Ping *called*
-  -> Info
-Repositories
+# e.g env = { :cmd => :info}
+Stack
+-> Commands
+  -> Ping 
+  -> Info *responds*
+-> Repositories
   -> CVS
-Executors
+-> Executors
   -> Executor
-Reporters
+-> Reporters
   -> Reporter
 ```
 
