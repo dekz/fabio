@@ -1,11 +1,13 @@
 require 'middleware'
 require File.join(File.dirname(__FILE__), 'executors/exec')
+require File.join(File.dirname(__FILE__), 'executors/ant')
 
 class Executors
   def initialize(app)
     @app = app
     @stack = Middleware::Builder.new do
-      use Executor
+      use Executor::Executor
+      use Executor::Ant
     end
   end
 

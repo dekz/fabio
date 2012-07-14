@@ -1,12 +1,16 @@
 module Executor
-  class Executor
+  class Ant
     def initialize(app)
       @app   = app
     end
 
     def call(env)
-      puts "I shall exec #{env[:exec]}" if env[:exec] == 'exec'
+      perform env if env[:exec] == 'ant'
       @app.call(env)
+    end
+
+    def perform args
+      `ant`
     end
   end
 end

@@ -6,8 +6,8 @@ class Repositories
   def initialize(app)
     @app = app
     @stack = Middleware::Builder.new do
-      use CVS
-      use Git
+      use Repository::CVS
+      use Repository::Git
     end
   end
 

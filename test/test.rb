@@ -6,7 +6,7 @@ env = {
     :type =>  'cvs',
     :path => 'master',
   },
-  :exec => 'rake',
+  :exec => 'ant',
   :cmd => :ping
 }
 
