@@ -1,4 +1,4 @@
-"!https://secure.travis-ci.org/dekz/fabio.png"
+[![Build Status](https://secure.travis-ci.org/dekz/fabio.png)](http://travis-ci.org/dekz/fabio)
 # Fabio
 Middleware remotes.
 
