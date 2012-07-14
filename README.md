@@ -1,3 +1,4 @@
+"!https://secure.travis-ci.org/dekz/fabio.png"
 # Fabio
 Middleware remotes.
 
