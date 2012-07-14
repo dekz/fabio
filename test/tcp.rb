@@ -19,5 +19,5 @@ loop do
     use Reporters
   end
 
-  stack.call({ :cmd => cmd.to_sym })
+  stack.call({ :cmd => cmd.to_sym, :out => client })
 end
