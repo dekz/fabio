@@ -6,8 +6,8 @@ class Commands
   def initialize(app)
     @app = app
     @stack = Middleware::Builder.new do
-      use Ping
-      use Info
+      use Command::Ping
+      use Command::Info
     end
   end
 
