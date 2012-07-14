@@ -4,7 +4,15 @@ class CVS
   end
 
   def call(env)
-    puts "I should get a CVS repo" if env[:repository][:type] == 'cvs'
+    perform_cvs_op(env[:repository]) if env[:repository][:type] == 'cvs'
     @app.call(env)
+  end
+
+  def perform_cvs_op args
+    repo = args
+    op = repo[:operation] || 'co'
+    cvs_args = repo[:options] if repo.member? :options
+    path = repo[:path]
+    `cvs #{cvs_args} #{op} #{path}`
   end
 end
