@@ -30,5 +30,7 @@ Stack
 # Why?
 Main goal is to create a simple and extendable remote build system. One which can easily be run in most platforms (ruby, or jruby).
 
-# Core concept
-Allways #call on, never stop the chain early.
+# Core concepts
+Always #call on, never stop the chain early.  
+Default your arguments where it makes sense, use the most logical default choice (i.e git with no operation is checkout)  
+
