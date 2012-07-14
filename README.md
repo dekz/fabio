@@ -26,3 +26,9 @@ Stack
   -> Reporter
 ```
 
+
+# Why?
+Main goal is to create a simple and extendable remote build system. One which can easily be run in most platforms (ruby, or jruby).
+
+# Core concept
+Allways #call on, never stop the chain early.
