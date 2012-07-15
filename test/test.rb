@@ -10,5 +10,5 @@ env = {
   :cmd => :ping
 }
 
-fabio = Fabio.new
+fabio = Fabio::Worker.new
 fabio.call env

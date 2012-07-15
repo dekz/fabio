@@ -1,19 +1,36 @@
 require 'middleware'
-require File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/commands')
-require File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/repositories')
-require File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/executors')
-require File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/reporters')
+require 'uuid'
 
-class Fabio
+autoload :Commands, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/commands')
+autoload :Repositories, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/repositories')
+autoload :Executors, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/executors')
+autoload :Reporters, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/reporters')
 
-  def call(env)
-    stack = Middleware::Builder.new do
-      use Commands
-      use Repositories
-      use Executors
-      use Reporters
+module Fabio
+
+  module Logger
+    def log(msg, type={:type => 'info'})
+      puts "#{type[:type]}: #{msg}"
     end
+    module_function :log
+  end
 
-    stack.call env
+  class Worker
+    include Logger
+
+    def call(env)
+      env[:uuid] =  UUID.new.generate
+      env.freeze
+      log "Fabio: #{env[:uuid]}"
+
+      stack = Middleware::Builder.new do
+        use Commands
+        use Repositories
+        use Executors
+        use Reporters
+      end
+
+      stack.call env
+    end
   end
 end
