@@ -33,6 +33,9 @@ module Fabio
       io = StringIO.new
       env = { :env => env, :out => io }
       stack.call env
+      env[:out].rewind
+      p env
+      puts "Out: #{env[:out].read}"
     end
   end
 end

@@ -13,7 +13,7 @@ class Commands
 
   def call env
     puts "--> Commands"
-    @stack.call env if env.member? :cmd
+    @stack.call env if env[:env].member? :cmd
     @app.call env
     puts "<-- Commands"
   end

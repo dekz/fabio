@@ -8,6 +8,7 @@ module Executor
     def call(env)
       @app.call unless env[:env].member? :exec
       perform(env[:env][:exec])
+      env[:out].write 'a' if env.member? :out
       @app.call(env)
     end
 
