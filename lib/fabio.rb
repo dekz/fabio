@@ -30,6 +30,8 @@ module Fabio
         use Reporters
       end
 
+      io = StringIO.new
+      env = { :env => env, :out => io }
       stack.call env
     end
   end

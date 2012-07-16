@@ -25,7 +25,7 @@ class Executors
 
   def call env
     puts "--> Executors"
-    @stack.call env if env.member? :exec
+    @stack.call env if env[:env].member? :exec
     @app.call env
     puts "<-- Executors"
   end

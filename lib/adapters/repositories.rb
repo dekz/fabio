@@ -13,7 +13,7 @@ class Repositories
 
   def call env
     puts "--> Repositories"
-    @stack.call env if env.member? :repository
+    @stack.call env if env[:env].member? :repository
     @app.call env
     puts "<-- Repositories"
   end

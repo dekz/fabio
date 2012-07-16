@@ -1,12 +1,19 @@
 module Repository
   class Git
+    autoload :Executor, File.join(File.expand_path(File.dirname(__FILE__)), '..', 'executors')
+    include Fabio::Logger
+    include Executor
+
     def initialize(app)
       @app   = app
     end
 
     def call(env)
-      perform(env[:repository]) if env[:repository][:type] == 'git'
+      log :git_before, :type => :debug
+      repos = env[:env][:repository] if env[:env].member? :repository
+      perform(repos) if repos[:type] == 'git'
       @app.call(env)
+      log :git_end, :type => :debug
     end
 
     def perform args
@@ -14,7 +21,7 @@ module Repository
       op = repo[:operation] || 'clone'
       git_args = repo[:options] if repo.member? :options
       path = repo[:path]
-      `git #{git_args} #{op} #{path}`
+      fexec "git #{git_args} #{op} #{path}"
     end
   end
 end
