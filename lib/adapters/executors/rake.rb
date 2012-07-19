@@ -1,3 +1,4 @@
+require 'command-builder'
 module Executor
   class Rake
     include Executor
@@ -12,12 +13,18 @@ module Executor
 
     def perform args
 
-      working_dir = args[:working_dir] || ''
-      path_to_rake = args[:rake_path]
-      rake_args = args[:args] || ''
-      target = args[:target] || ''
+      cd = CommandBuilder.new(:cd)
+      cd << args[:working_dir] if args.member? :working_dir
 
-      fexec "cd #{working_dir} && #{path_to_rake} rake #{rake_args} #{target}"
+      rake = CommandBuilder.new((args[:rake_path] || :rake))
+      rake << args[:args] if args.member? :args
+      rake << args[:target] if args.member? :target
+
+      cmd = ''
+      cmd << "#{cd.to_s} && " unless cd.params.empty?
+      cmd << rake.to_s
+
+      fexec cmd
     end
   end
 end

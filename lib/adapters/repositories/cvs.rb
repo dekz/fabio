@@ -22,12 +22,12 @@ module Repository
       cvs_args = repo[:options] if repo.member? :options
       path = repo[:path]
 
-      cmd = 'cvs'
-      cmd << " #{cvs_args}" unless cvs_args.empty?
-      cmd << " #{op}" unless op.empty?
-      cmd << " #{path}" unless path.empty?
+      cmd = CommandBuilder.new(:cvs)
+      cmd << cvs_args unless cvs_args.empty?
+      cmd << op unless op.empty?
+      cmd << path unless path.empty?
 
-      fexec cmd
+      fexec cmd.to_s
     end
   end
 end

@@ -5,6 +5,7 @@ env = {
   :repository => {
     :type =>  'git',
     :path => 'https://github.com/dekz/fabio.git',
+    :out_dir => 'fabio'
   },
   :environments => {
     :type => 'bundler',

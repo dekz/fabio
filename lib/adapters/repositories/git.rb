@@ -1,3 +1,4 @@
+require 'command-builder'
 module Repository
   class Git
     autoload :Executor, File.join(File.expand_path(File.dirname(__FILE__)), '..', 'executors')
@@ -21,13 +22,16 @@ module Repository
       op = repo[:operation] || 'clone'
       git_args = repo.member?(:options) ? repo[:options] : ''
       path = repo[:path] || ''
+      out_dir = repo[:out_dir] || ''
 
-      cmd = 'git'
-      cmd << '  ' << git_args unless git_args.empty?
-      cmd << '  ' << op unless op.empty?
-      cmd << '  ' << path unless path.empty?
+      cmd = CommandBuilder.new(:git)
 
-      fexec cmd
+      cmd << git_args unless git_args.empty?
+      cmd << op unless op.empty?
+      cmd << path unless path.empty?
+      cmd << out_dir unless out_dir.empty?
+
+      fexec cmd.to_s
     end
   end
 end
