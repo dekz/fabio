@@ -8,7 +8,8 @@ module Executor
   def fexec args
    begin
      puts ('> ' << args)
-     `#{args}`
+     o = `#{args}`
+     p o
     rescue Exception => e
       p e
    end
@@ -30,11 +31,15 @@ class Executors
   def call env
     puts "--> Executors"
     if env[:env].member? :exec
+      z = { :global => env[:env], :out => env[:out] }
       ae = [env[:env][:exec]] if env[:env][:exec].is_a? Hash
+      ae = [{ :type => env[:env][:exec] }] if env[:env][:exec].is_a? String
       ae.each do |e|
-        @stack.call({ :env => e, :out => env[:out] })
+        z[:env] = e
+        @stack.call(z)
       end
     end
+
     @app.call env
     puts "<-- Executors"
   end

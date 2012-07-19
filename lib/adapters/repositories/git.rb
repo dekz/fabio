@@ -10,7 +10,7 @@ module Repository
 
     def call(env)
       log :git_before, :type => :debug
-      repos = env[:env][:repository] if env[:env].member? :repository
+      repos = env[:env]
       perform(repos) if repos[:type] == 'git'
       @app.call(env)
       log :git_end, :type => :debug
