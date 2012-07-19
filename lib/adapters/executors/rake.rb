@@ -6,7 +6,7 @@ module Executor
     end
 
     def call(env)
-      perform(env[:env]) if env[:env][:type] == 'rake'
+      p perform(env[:env]) if env[:env][:type] == 'rake'
       @app.call(env)
     end
 

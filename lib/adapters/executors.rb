@@ -7,9 +7,11 @@ module Executor
 
   def fexec args
    begin
+     puts ">>#{caller[0]}\n"
      puts ('> ' << args)
      o = `#{args}`
-     p o
+     puts  o
+     puts "<<\n"
     rescue Exception => e
       p e
    end

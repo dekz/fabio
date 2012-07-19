@@ -21,7 +21,13 @@ module Repository
       op = repo[:operation] || 'co'
       cvs_args = repo[:options] if repo.member? :options
       path = repo[:path]
-      fexec "cvs #{cvs_args} #{op} #{path}"
+
+      cmd = 'cvs'
+      cmd << " #{cvs_args}" unless cvs_args.empty?
+      cmd << " #{op}" unless op.empty?
+      cmd << " #{path}" unless path.empty?
+
+      fexec cmd
     end
   end
 end

@@ -19,9 +19,15 @@ module Repository
     def perform args
       repo = args
       op = repo[:operation] || 'clone'
-      git_args = repo[:options] if repo.member? :options
-      path = repo[:path]
-      fexec "git #{git_args} #{op} #{path}"
+      git_args = repo.member?(:options) ? repo[:options] : ''
+      path = repo[:path] || ''
+
+      cmd = 'git'
+      cmd << '  ' << git_args unless git_args.empty?
+      cmd << '  ' << op unless op.empty?
+      cmd << '  ' << path unless path.empty?
+
+      fexec cmd
     end
   end
 end
