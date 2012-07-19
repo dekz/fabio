@@ -1,3 +1,4 @@
+require 'command-builder'
 module Environment
   class Bundler
     autoload :Executor, File.join(File.expand_path(File.dirname(__FILE__)), '..', 'executors')
@@ -20,9 +21,17 @@ module Environment
     end
 
     def perform args
-      working_dir = args[:working_dir] || ''
-      target = args[:args] || ''
-      fexec "#{"cd #{working_dir} && " unless working_dir.empty?} bundle #{target}"
+      cd = CommandBuilder.new(:cd)
+      cd << args[:working_dir] if args.member? :working_dir
+
+      bundle = CommandBuilder.new(:bundle)
+      bundle << args[:args] || 'install'
+
+      cmd = ''
+      cmd << "#{cd.to_s} && " unless cd.params.empty?
+      cmd << bundle.to_s
+
+      fexec cmd.to_s
     end
   end
 end

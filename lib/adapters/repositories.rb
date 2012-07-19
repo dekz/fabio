@@ -13,12 +13,12 @@ class Repositories
 
   def call env
     puts "--> Repositories"
+
     if env[:env].member? :repository
       z = { :global => env[:env], :out => env[:out] }
       ae = [env[:env][:repository]] if env[:env][:repository].is_a? Hash
       ae.each do |e|
         z[:env] = e
-        p z
         @stack.call(z)
       end
     end

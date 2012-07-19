@@ -10,9 +10,7 @@ module Repository
 
     def call(env)
       log :cvs_before, :type => :debug
-      repos = env[:env]
-      p repos
-      perform(repos) if repos[:type] == 'cvs'
+      perform(env[:env]) if env[:env][:type] == 'cvs'
       @app.call(env)
       log :cvs_end, :type => :debug
     end

@@ -20,6 +20,7 @@ module Executor
       rake << args[:args] if args.member? :args
       rake << args[:target] if args.member? :target
 
+      # Combine cd and rake. TODO replace with Dir.chdir?
       cmd = ''
       cmd << "#{cd.to_s} && " unless cd.params.empty?
       cmd << rake.to_s
