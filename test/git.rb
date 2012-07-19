@@ -19,13 +19,21 @@ env = {
   :exec => [
     {
       :type => 'rake',
+      :rakefile => 'Rakefile',
       :working_dir => './fabio',
-      :target => 'test' 
+      :target => 'test',
+      :env_args => "TEST_PATH='a'"
     },
     {
       :type => 'ant',
+      :buildfile => 'zz.xml',
       :working_dir => './fabio',
-      :target => 'test' 
+      :target => 'test',
+      #:java_home => 'java',
+      #:ant_home => '/usr/bin/ant',
+      #:args => ''
+      :opts => '-XX:ParallelGCThreads=2'
+      
     }
   ],
 }

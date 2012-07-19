@@ -18,11 +18,16 @@ module Executor
 
       rake = CommandBuilder.new((args[:rake_path] || :rake))
       rake << args[:args] if args.member? :args
+      if args.member? :rakefile
+          rake << :f
+          rake << args[:rakefile]
+      end
       rake << args[:target] if args.member? :target
 
       # Combine cd and rake. TODO replace with Dir.chdir?
       cmd = ''
       cmd << "#{cd.to_s} && " unless cd.params.empty?
+      cmd << "#{args[:env_args]} " if args.member? :env_args
       cmd << rake.to_s
 
       fexec cmd
