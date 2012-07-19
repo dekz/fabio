@@ -13,7 +13,7 @@ module Environment
       log :bundler_before, :type => :debug
       p env
       if env[:env][:type] == 'bundler'
-        perform(env[:env]) unless env[:env][:args] == 'install'
+        perform(env[:env]) if env[:env][:args] == 'install'
         @app.call(env)
         perform(env[:env]) if env[:env][:args] == 'package'
       end
