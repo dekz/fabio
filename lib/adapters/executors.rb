@@ -1,4 +1,5 @@
 require 'middleware'
+require 'popen4'
 require File.join(File.dirname(__FILE__), 'worker_stack')
 require File.join(File.dirname(__FILE__), 'executors/exec')
 require File.join(File.dirname(__FILE__), 'executors/ant')
@@ -8,11 +9,13 @@ module Executor
 
   def fexec args
    begin
-     puts ">>#{caller[0]}\n"
-     puts ('> ' << args)
-     o = `#{args}`
-     puts  o
-     puts "<<\n"
+     status = POpen4.popen4(args) do |pout, perr, pin, pid|
+       puts "#{pid}>>#{caller[0]}\n"
+       puts ('> ' << args)
+       puts "STDOUT:  #{pout.read}"
+       puts "STDERR:  #{perr.read}"
+     end
+     puts "#{status}<<\n"
     rescue Exception => e
       p e
    end

@@ -22,6 +22,7 @@ env = {
       :rakefile => 'Rakefile',
       :working_dir => './fabio',
       :target => 'test',
+      :rvm_use => 'jruby-1.6.7',
       :env_args => "TEST_PATH='a'"
     },
     {
