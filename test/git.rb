@@ -4,9 +4,18 @@ env = {
   :version => 0.1,
   :repository => {
     :type =>  'git',
-    :path => 'git@gist.github.com:698c2216b314fb2c4420.git',
+    :path => 'https://github.com/dekz/fabio.git',
+  },
+  :environments => {
+    :type => 'bundler',
+    :args => 'install'
+  },
+  :exec => {
+    :type => 'rake',
+    :working_dir => './fabio',
+    :target => 'test'
   },
 }
 
-fabio = Fabio.new
+fabio = Fabio::Worker.new
 fabio.call env
