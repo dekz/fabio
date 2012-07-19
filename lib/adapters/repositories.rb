@@ -1,8 +1,9 @@
 require 'middleware'
+require File.join(File.dirname(__FILE__), 'worker_stack')
 require File.join(File.dirname(__FILE__), 'repositories/cvs')
 require File.join(File.dirname(__FILE__), 'repositories/git')
 
-class Repositories
+class Repositories < WorkerStack
   def initialize(app)
     @app = app
     @stack = Middleware::Builder.new do
@@ -14,13 +15,8 @@ class Repositories
   def call env
     puts "--> Repositories"
 
-    if env[:env].member? :repository
-      z = { :global => env[:env], :out => env[:out] }
-      ae = [env[:env][:repository]] if env[:env][:repository].is_a? Hash
-      ae.each do |e|
-        z[:env] = e
-        @stack.call(z)
-      end
+    run_env(env, :repository) do |z|
+      @stack.call(z)
     end
 
     @app.call env

@@ -5,8 +5,12 @@ module Command
     end
 
     def call(env)
-      puts 'Pong!' if env[:cmd] == :ping
+      perform(env) if env[:env][:type] == 'info'
       @app.call env
+    end
+
+    def perform args
+      puts 'Pong!'
     end
   end
 end

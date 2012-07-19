@@ -5,9 +5,13 @@ module Command
     end
 
     def call(env)
-      puts 'Info' if env[:cmd] == :info
-      env[:out].write 'Info!' if env.member? :out
+      perform(env) if env[:env][:type] == 'info'
       @app.call env
+    end
+
+    def perform env
+      puts 'Info' 
+      env[:out].write 'Info!' if env.member? :out
     end
   end
 end

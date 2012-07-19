@@ -1,7 +1,8 @@
 require 'middleware'
+require File.join(File.dirname(__FILE__), 'worker_stack')
 require File.join(File.dirname(__FILE__), 'environments/bundler')
 
-class Environments
+class Environments < WorkerStack
   def initialize(app)
     @app = app
     @stack = Middleware::Builder.new do
@@ -11,13 +12,11 @@ class Environments
 
   def call env
     puts "--> Environments"
-    if env[:env].member? :environments
-      ae = [env[:env][:environments]] if env[:env][:environments].is_a? Hash
-      ae.each do |e|
-        p e
-        @stack.call({ :env => e, :out => env[:out] })
-      end
+
+    run_env(env, :environment) do |z|
+      @stack.call(z)
     end
+
     @app.call env
     puts "<-- Environments"
   end

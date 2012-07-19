@@ -1,4 +1,5 @@
 require 'middleware'
+require File.join(File.dirname(__FILE__), 'worker_stack')
 require File.join(File.dirname(__FILE__), 'executors/exec')
 require File.join(File.dirname(__FILE__), 'executors/ant')
 require File.join(File.dirname(__FILE__), 'executors/rake')
@@ -20,7 +21,7 @@ module Executor
 
 end
 
-class Executors
+class Executors < WorkerStack
   def initialize(app)
     @app = app
     @stack = Middleware::Builder.new do
@@ -32,14 +33,9 @@ class Executors
 
   def call env
     puts "--> Executors"
-    if env[:env].member? :exec
-      z = { :global => env[:env], :out => env[:out] }
-      ae = [env[:env][:exec]] if env[:env][:exec].is_a? Hash
-      ae = [{ :type => env[:env][:exec] }] if env[:env][:exec].is_a? String
-      ae.each do |e|
-        z[:env] = e
-        @stack.call(z)
-      end
+
+    run_env(env, :exec) do |z|
+      @stack.call(z)
     end
 
     @app.call env
