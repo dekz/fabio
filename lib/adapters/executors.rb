@@ -7,17 +7,37 @@ require File.join(File.dirname(__FILE__), 'executors/rake')
 
 module Executor
 
+  class ExecutionError < Exception
+  end
+
   def fexec args
    begin
+     err = nil
+     stdout = nil
+     who_called_me = caller[0]
+     puts ('> ' << args)
      status = POpen4.popen4(args) do |pout, perr, pin, pid|
-       puts "#{pid}>>#{caller[0]}\n"
-       puts ('> ' << args)
-       puts "STDOUT:  #{pout.read}"
-       puts "STDERR:  #{perr.read}"
+       puts "#{pid} >> #{who_called_me}\n"
+       err = perr.read
+       stdout = pout.read
      end
-     puts "#{status}<<\n"
+
+     puts "STDOUT:  #{stdout}" unless stdout.empty?
+     puts "STDERR:  #{err}" unless stderr.empty?
+
+     if !status.success?
+       err_info = {
+         :pid => status.pid,
+         :stderr => err,
+         :cmd => args,
+         :stdout => stdout,
+         :status => status.exitstatus
+       }
+       raise ExecutionError, err_info
+     end
     rescue Exception => e
       p e
+      raise e
    end
   end
   module_function :fexec
