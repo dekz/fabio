@@ -23,7 +23,7 @@ module Executor
      end
 
      puts "STDOUT:  #{stdout}" unless stdout.empty?
-     puts "STDERR:  #{err}" unless stderr.empty?
+     puts "STDERR:  #{err}" unless err.empty?
 
      if !status.success?
        err_info = {
