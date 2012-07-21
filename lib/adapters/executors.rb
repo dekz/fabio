@@ -11,8 +11,15 @@ module Executor
   end
 
   def fexec args, dir=nil
+    who_called_me = caller[0]
     exec_in_dir dir do
-      run_cmd args
+
+      return block_cmd(args) do |o,e,i,d|
+        puts "#{d} >> #{who_called_me}\n"
+        yield o,e,i,d
+      end if block_given?
+
+      default_cmd args
     end
   end
   module_function :fexec
@@ -26,37 +33,45 @@ module Executor
     Dir.chdir cwd
   end
 
-  def run_cmd cmd
-   begin
-     err = nil
-     stdout = nil
-     who_called_me = caller[3]
-     puts ("#{Dir.pwd}> " << cmd)
-     status = POpen4.popen4(cmd) do |pout, perr, pin, pid|
-       puts "#{pid} >> #{who_called_me}\n"
-       err = perr.read
-       stdout = pout.read
-     end
+  def block_cmd cmd
+    if block_given?
+      return POpen4.popen4(cmd) { |o, e, i, d| yield o,e,i,d }
+    end
+  end
 
-     puts "STDOUT:  #{stdout}" unless stdout.empty?
-     puts "STDERR:  #{err}" unless err.empty?
+  ##
+  # Default command executor, just print out stuff and
+  # return an info object
+  def default_cmd cmd
+    return block_cmd(cmd) if block_given?
+    begin
+      err = nil
+      stdout = nil
+      puts ("#{Dir.pwd}> " << cmd)
+      status = block_cmd(cmd) do |pout, perr, pin, pid|
+        err = perr.read
+        stdout = pout.read
+      end
 
-     info = {
-       :pid => status.pid,
-       :stderr => err,
-       :cmd => cmd,
-       :stdout => stdout,
-       :status => status.exitstatus
-     }
-     if !status.success?
-       raise ExecutionError, info
-     end
+      puts "STDOUT:  #{stdout}" unless stdout.empty?
+      puts "STDERR:  #{err}" unless err.empty?
 
-     return info
-    rescue Exception => e
-      p e
-      raise e
-   end
+      info = {
+        :pid => status.pid,
+        :stderr => err,
+        :cmd => cmd,
+        :stdout => stdout,
+        :status => status.exitstatus
+      }
+      if !status.success?
+        raise ExecutionError, info
+      end
+
+      return info
+     rescue Exception => e
+       p e
+       raise e
+    end
   end
 
 end

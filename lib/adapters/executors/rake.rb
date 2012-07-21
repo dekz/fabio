@@ -7,7 +7,7 @@ module Executor
     end
 
     def call(env)
-      p perform(env) if env[:env][:type] == 'rake'
+      perform(env) if env[:env][:type] == 'rake'
       @app.call(env)
     end
 
@@ -31,7 +31,9 @@ module Executor
       cmd << rvm_prefix(env)
       cmd << rake.to_s
 
-      fexec cmd, args[:working_dir]
+      status = fexec(cmd, args[:working_dir]) do |pout,perr,pin,pid|
+        env[:out] << pout.read
+      end
     end
 
     def rvm_prefix env
