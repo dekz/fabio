@@ -10,18 +10,29 @@ module Executor
   class ExecutionError < Exception
   end
 
-  def fexec_in_dir dir, args
+  def fexec args, dir=nil
+    exec_in_dir dir do
+      run_cmd args
+    end
+  end
+  module_function :fexec
+
+  def exec_in_dir dir
+    dir ||= Dir.pwd
+    cwd = Dir.pwd 
     Dir.mkdir(dir) unless Dir.exists? dir
-    fexec "cd #{dir} && #{args}"
+    Dir.chdir dir
+    yield
+    Dir.chdir cwd
   end
 
-  def fexec args
+  def run_cmd cmd
    begin
      err = nil
      stdout = nil
-     who_called_me = caller[0]
-     puts ('> ' << args)
-     status = POpen4.popen4(args) do |pout, perr, pin, pid|
+     who_called_me = caller[3]
+     puts ('> ' << cmd)
+     status = POpen4.popen4(cmd) do |pout, perr, pin, pid|
        puts "#{pid} >> #{who_called_me}\n"
        err = perr.read
        stdout = pout.read
@@ -30,22 +41,23 @@ module Executor
      puts "STDOUT:  #{stdout}" unless stdout.empty?
      puts "STDERR:  #{err}" unless err.empty?
 
+     info = {
+       :pid => status.pid,
+       :stderr => err,
+       :cmd => cmd,
+       :stdout => stdout,
+       :status => status.exitstatus
+     }
      if !status.success?
-       err_info = {
-         :pid => status.pid,
-         :stderr => err,
-         :cmd => args,
-         :stdout => stdout,
-         :status => status.exitstatus
-       }
-       raise ExecutionError, err_info
+       raise ExecutionError, info
      end
+
+     return info
     rescue Exception => e
       p e
       raise e
    end
   end
-  module_function :fexec
 
 end
 

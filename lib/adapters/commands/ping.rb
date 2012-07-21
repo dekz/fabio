@@ -5,7 +5,6 @@ module Command
     end
 
     def call(env)
-      p env
       perform(env) if env[:env][:type].to_s == :ping
       @app.call env
     end

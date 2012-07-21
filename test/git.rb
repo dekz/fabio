@@ -8,11 +8,11 @@ env = {
   ],
   :repository => {
     :type =>  'git',
-    :path => 'https://github.com/dekz/fabio.git',
+    :path => 'https://github.com/dekz/command-builder.git',
     :operation => :pull, #optional
-    :working_dir => './fabio', #optional
+    :working_dir => './command-builder', # optional
     :branch => 'master', #optional
-    :out_dir => 'fabio'
+    #:out_dir => 'command-builder', # when using clone
   },
   :environments => {
     :type => 'bundler',
@@ -23,7 +23,7 @@ env = {
     {
       :type => 'rake',
       :rakefile => 'Rakefile',
-      :working_dir => './fabio',
+      :working_dir => './command-builder',
       :target => 'test',
       :rvm_use => 'jruby-1.6.7',
       :env_args => "TEST_PATH='a'"

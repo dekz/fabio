@@ -18,7 +18,6 @@ module Executor
       end
 
       cd = CommandBuilder.new(:cd)
-      cd << args[:working_dir] if args.member? :working_dir
 
       # Load ant through ant_home with java specified
       if args.member? :java_home
@@ -37,6 +36,8 @@ module Executor
         ant << args[:buildfile]
       end
       ant << args[:target] if args.member? :target
+
+      cd << args[:working_dir] if args.member? :working_dir
 
       cmd = ''
       cmd << "#{cd.to_s} && " unless cd.params.empty?
