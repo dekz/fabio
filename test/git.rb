@@ -8,23 +8,29 @@ env = {
   ],
   :repository => {
     :type =>  'git',
-    :path => 'https://github.com/dekz/command-builder.git',
+    :path => 'https://github.com/dekz/fabio.git',
     :operation => :pull, #optional
-    :working_dir => './command-builder', # optional
+    :working_dir => './fabio', # optional
     :branch => 'master', #optional
     #:out_dir => 'command-builder', # when using clone
   },
-  :environments => {
-    :type => 'bundler',
-    :args => 'install',
-    :working_dir => './fabio',
-  },
+  :environments => [
+    {
+      :type => 'bundler',
+      :args => 'install',
+      :working_dir => './fabio',
+    },
+    {
+      :type => 'rvm',
+      :use => 'ruby-1.9.3-p194'
+    },
+  ],
   :exec => [
     {
       :type => 'rake',
       :rakefile => 'Rakefile',
-      :working_dir => './command-builder',
-      :target => 'test',
+      :working_dir => './fabio',
+      :target => 'empty',
       :rvm_use => 'jruby-1.6.7',
       :env_args => "TEST_PATH='a'"
     },

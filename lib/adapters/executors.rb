@@ -31,7 +31,7 @@ module Executor
      err = nil
      stdout = nil
      who_called_me = caller[3]
-     puts ('> ' << cmd)
+     puts ("#{Dir.pwd}> " << cmd)
      status = POpen4.popen4(cmd) do |pout, perr, pin, pid|
        puts "#{pid} >> #{who_called_me}\n"
        err = perr.read

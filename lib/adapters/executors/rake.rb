@@ -7,14 +7,12 @@ module Executor
     end
 
     def call(env)
-      p perform(env[:env]) if env[:env][:type] == 'rake'
+      p perform(env) if env[:env][:type] == 'rake'
       @app.call(env)
     end
 
-    def perform args
-
-      cd = CommandBuilder.new(:cd)
-      cd << args[:working_dir] if args.member? :working_dir
+    def perform env
+      args = env[:env]
 
       rake = CommandBuilder.new((args[:rake_path] || :rake))
       rake << args[:args] if args.member? :args
@@ -25,12 +23,28 @@ module Executor
       rake << args[:target] if args.member? :target
 
       # Combine cd and rake. TODO replace with Dir.chdir?
+      # TODO look for rvm env here?
+
+
       cmd = ''
-      cmd << "#{cd.to_s} && " unless cd.params.empty?
       cmd << "#{args[:env_args]} " if args.member? :env_args
+      cmd << rvm_prefix(env)
       cmd << rake.to_s
 
-      fexec cmd
+      fexec cmd, args[:working_dir]
+    end
+
+    def rvm_prefix env
+      rvm_env = nil
+      envs = env[:global][:environments]
+      rvm_env = envs[:use] if envs.is_a?(Hash) && envs[:type] == 'rvm'
+      rvm_env ||= envs.select { |e| e[:type] == 'rvm' }.first[:use] unless envs.is_a? Hash
+      return '' unless rvm_env
+
+      rvm = CommandBuilder.new(:rvm)
+      rvm << rvm_env
+      rvm << 'do'
+      rvm.to_s + ' '
     end
   end
 end

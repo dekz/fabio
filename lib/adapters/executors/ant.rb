@@ -17,8 +17,6 @@ module Executor
         return fexec ant.to_s
       end
 
-      cd = CommandBuilder.new(:cd)
-
       # Load ant through ant_home with java specified
       if args.member? :java_home
         ant.command = args[:java_home]
@@ -35,16 +33,14 @@ module Executor
         ant << :f
         ant << args[:buildfile]
       end
+
       ant << args[:target] if args.member? :target
 
-      cd << args[:working_dir] if args.member? :working_dir
-
       cmd = ''
-      cmd << "#{cd.to_s} && " unless cd.params.empty?
       cmd << "ANT_OPTS=#{args[:opts]} " if args.member? :opts
       cmd << ant.to_s
 
-      fexec cmd
+      fexec cmd.to_s, args[:working_dir]
     end
   end
 end

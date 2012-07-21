@@ -21,8 +21,10 @@ Stack
   -> Info *responds*
 -> Repositories
   -> CVS
+  -> Git
 -> Executors
-  -> Executor
+  -> Ant
+  -> Rake
 -> Reporters
   -> Reporter
 ```
