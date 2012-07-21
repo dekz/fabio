@@ -6,3 +6,7 @@ task 'test' do
     p e
   end
 end
+
+task 'empty' do
+  puts 'empty'
+end
