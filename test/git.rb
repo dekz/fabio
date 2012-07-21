@@ -9,6 +9,9 @@ env = {
   :repository => {
     :type =>  'git',
     :path => 'https://github.com/dekz/fabio.git',
+    :operation => :pull, #optional
+    :working_dir => './fabio', #optional
+    :branch => 'master', #optional
     :out_dir => 'fabio'
   },
   :environments => {
@@ -25,17 +28,17 @@ env = {
       :rvm_use => 'jruby-1.6.7',
       :env_args => "TEST_PATH='a'"
     },
-    {
-      :type => 'ant',
-      :buildfile => 'zz.xml',
-      :working_dir => './fabio',
-      :target => 'test',
-      #:java_home => 'java',
-      #:ant_home => '/usr/bin/ant',
-      #:args => ''
-      :opts => '-XX:ParallelGCThreads=2'
-      
-    }
+#    {
+#      :type => 'ant',
+#      :buildfile => 'zz.xml',
+#      :working_dir => './fabio',
+#      :target => 'test',
+#      #:java_home => 'java',
+#      #:ant_home => '/usr/bin/ant',
+#      #:args => ''
+#      :opts => '-XX:ParallelGCThreads=2'
+#      
+#    }
   ],
 }
 

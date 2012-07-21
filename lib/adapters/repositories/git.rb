@@ -19,7 +19,7 @@ module Repository
 
     def perform args
       repo = args
-      op = repo[:operation] || 'clone'
+      op = repo[:operation].to_s || 'clone'
       git_args = repo.member?(:options) ? repo[:options] : ''
       path = repo[:path] || ''
       out_dir = repo[:out_dir] || ''
@@ -27,10 +27,11 @@ module Repository
       cmd = CommandBuilder.new(:git)
 
       cmd << git_args unless git_args.empty?
-      cmd << op unless op.empty?
+      cmd << op.to_s unless op.empty?
       cmd << path unless path.empty?
-      cmd << out_dir unless out_dir.empty?
+      cmd << out_dir unless (out_dir.empty? || op['pull'])
 
+      return fexec_in_dir args[:working_dir], cmd.to_s if args.member? :working_dir
       fexec cmd.to_s
     end
   end

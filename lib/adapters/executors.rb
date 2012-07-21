@@ -10,6 +10,11 @@ module Executor
   class ExecutionError < Exception
   end
 
+  def fexec_in_dir dir, args
+    Dir.mkdir(dir) unless Dir.exists? dir
+    fexec "cd #{dir} && #{args}"
+  end
+
   def fexec args
    begin
      err = nil

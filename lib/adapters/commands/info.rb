@@ -5,6 +5,7 @@ module Command
     end
 
     def call(env)
+      p env
       perform(env) if env[:env][:type] == 'info'
       @app.call env
     end
