@@ -31,7 +31,7 @@ env = {
       :rakefile => 'Rakefile',
       :working_dir => './fabio',
       :target => 'empty',
-      :rvm_use => 'jruby-1.6.7',
+      :rvm_use => 'ruby-1.6.7',
       :env_args => "TEST_PATH='a'"
     },
 #    {
@@ -46,6 +46,7 @@ env = {
 #      
 #    }
   ],
+  :report => true,
 }
 
 fabio = Fabio::Worker.new

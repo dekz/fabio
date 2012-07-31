@@ -3,8 +3,12 @@ class WorkerStack
     if env[:env].member? sym
       z = { :global => env[:env], :out => env[:out] }
       ae = env[:env][sym]
-      ae = [ae] if ae.is_a? Hash
-      ae = [{ :type => ae}] if ae.is_a? Symbol
+      case ae
+      when Hash, TrueClass, FalseClass, String
+        ae = [ae]
+      when Symbol
+        ae = [{ :type => ae}]
+      end
       ae.each do |e|
         z[:env] = e
         yield z

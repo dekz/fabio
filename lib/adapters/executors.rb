@@ -1,9 +1,10 @@
 require 'middleware'
 require 'popen4'
-require File.join(File.dirname(__FILE__), 'worker_stack')
-require File.join(File.dirname(__FILE__), 'executors/exec')
-require File.join(File.dirname(__FILE__), 'executors/ant')
-require File.join(File.dirname(__FILE__), 'executors/rake')
+
+require 'adapters/worker_stack'
+require 'adapters/executors/exec'
+require 'adapters/executors/ant'
+require 'adapters/executors/rake'
 
 module Executor
 
@@ -11,16 +12,16 @@ module Executor
   end
 
   def fexec args, dir=nil
-    who_called_me = caller[0]
+    resp = nil
     exec_in_dir dir do
-
       return block_cmd(args) do |o,e,i,d|
-        puts "#{d} >> #{who_called_me}\n"
+        puts "#{d} >> #{caller[0]}\n"
         yield o,e,i,d
       end if block_given?
 
-      default_cmd args
+      resp =  default_cmd args
     end
+    resp
   end
   module_function :fexec
 
@@ -87,13 +88,10 @@ class Executors < WorkerStack
   end
 
   def call env
-    puts "--> Executors"
-
     run_env(env, :exec) do |z|
       @stack.call(z)
     end
 
     @app.call env
-    puts "<-- Executors"
   end
 end

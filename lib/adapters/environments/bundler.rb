@@ -1,7 +1,7 @@
 require 'command-builder'
 module Environment
   class Bundler
-    autoload :Executor, File.join(File.expand_path(File.dirname(__FILE__)), '..', 'executors')
+    autoload :Executor, 'adapters/executors'
     include Fabio::Logger
     include Executor
 

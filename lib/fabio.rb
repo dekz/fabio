@@ -1,12 +1,13 @@
 require 'middleware'
 require 'uuid'
 require 'stringio'
+$:.unshift File.expand_path(File.join(File.dirname(__FILE__), '../lib'))
 
-autoload :Commands, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/commands')
-autoload :Repositories, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/repositories')
-autoload :Environments, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/environments')
-autoload :Executors, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/executors')
-autoload :Reporters, File.join(File.expand_path(File.dirname(__FILE__)), 'adapters/reporters')
+autoload :Commands, 'adapters/commands'
+autoload :Repositories, 'adapters/repositories'
+autoload :Environments, 'adapters/environments'
+autoload :Executors, 'adapters/executors'
+autoload :Reporters, 'adapters/reporters'
 
 module Fabio
 

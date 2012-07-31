@@ -22,10 +22,7 @@ module Executor
       end
       rake << args[:target] if args.member? :target
 
-      # Combine cd and rake. TODO replace with Dir.chdir?
-      # TODO look for rvm env here?
-
-
+      # Prefix RVM here if it's available in global env
       cmd = ''
       cmd << "#{args[:env_args]} " if args.member? :env_args
       cmd << rvm_prefix(env)

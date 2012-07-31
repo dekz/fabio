@@ -1,6 +1,6 @@
 module Repository
   class CVS
-    autoload :Executor, File.join(File.expand_path(File.dirname(__FILE__)), '..', 'executors')
+    autoload :Executor, 'adapters/executors'
     include Fabio::Logger
     include Executor
 
