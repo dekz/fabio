@@ -1,5 +1,6 @@
 class WorkerStack
   def run_env env, sym
+    return unless env.is_a? Hash
     if env[:env].member? sym
       z = { :global => env[:env], :out => env[:out] }
       ae = env[:env][sym]
