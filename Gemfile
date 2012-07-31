@@ -1,6 +1,10 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 gem 'uuid'
-gem 'rake'
 gem 'middleware'
 gem 'command-builder'
 gem 'popen4'
+
+group :development do
+  gem 'rspec'
+  gem 'rake'
+end
