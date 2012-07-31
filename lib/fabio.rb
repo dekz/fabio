@@ -44,6 +44,7 @@ module Fabio
 
       env[:out].rewind
       log "Out: #{env[:out].read}", :debug
+      env[:out].rewind
       env
     end
   end

@@ -14,6 +14,9 @@ class Commands < WorkerStack
 
   def call env
     run_env(env, :cmd) do |z|
+      if env[:env][:cmd].is_a? String
+        z[:env] = { :type => z[:env] }
+      end
       @stack.call(z)
     end
 

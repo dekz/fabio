@@ -26,7 +26,7 @@ module Executor
     end
     resp
   end
-  module_function :fexec
+  #module_function :fexec
 
   def exec_in_dir dir
     dir ||= Dir.pwd
@@ -36,6 +36,7 @@ module Executor
     yield
     Dir.chdir cwd
   end
+  #module_function :exec_in_dir
 
   def block_cmd cmd
     if block_given?
