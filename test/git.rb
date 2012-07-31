@@ -9,8 +9,8 @@ env = {
   :repository => {
     :type =>  'git',
     :path => 'https://github.com/dekz/fabio.git',
-    :operation => :pull, #optional
-    :working_dir => './fabio', # optional
+    :operation => :clone, #optional
+    :working_dir => './temp', # optional
     :branch => 'master', #optional
     #:out_dir => 'command-builder', # when using clone
   },

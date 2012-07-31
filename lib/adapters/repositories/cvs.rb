@@ -22,12 +22,12 @@ module Repository
       path = repo[:path]
 
       cmd = CommandBuilder.new(:cvs)
+      cmd << cvs_args unless cvs_args.empty?
       cmd << op
       cmd << path
-      cmd << cvs_args unless cvs_args.empty?
       cmd << :P if cvs_args.empty?
 
-      fexec cmd.to_s
+      result = fexec cmd.to_s, args[:working_dir]
     end
   end
 end
