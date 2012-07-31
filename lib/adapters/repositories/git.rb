@@ -32,7 +32,7 @@ module Repository
       cmd << path unless path.empty?
       cmd << out_dir unless (out_dir.empty? || op['pull'])
 
-      fexec cmd.to_s, args[:working_dir]
+      result = fexec cmd.to_s, args[:working_dir]
     end
   end
 end

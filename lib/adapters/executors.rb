@@ -8,8 +8,7 @@ require 'adapters/executors/rake'
 
 module Executor
 
-  class ExecutionError < Exception
-  end
+  class ExecutionError < Exception; end
 
   def fexec args, dir=nil
     resp = nil
@@ -17,13 +16,13 @@ module Executor
     exec_in_dir dir do
       # Call a block exec and yield pipes if block given
       return block_cmd(args) do |o,e,i,d|
-        Fabio::Logger::log "$ #{args}", :type => :exec
-        Fabio::Logger::log "#{d} >> #{who_called}\n", :type => :exec
+        Fabio::Logger::log(("#{Dir.pwd}> " << args), :type => :exec)
+        Fabio::Logger::log "#{d} >> #{who_called}", :type => :exec
         yield o,e,i,d
       end if block_given?
 
       # no block given, do a default reading stdout and stderr
-      resp =  default_cmd args
+      resp = default_cmd args
     end
     resp
   end
@@ -52,14 +51,14 @@ module Executor
     begin
       err = nil
       stdout = nil
-      puts ("#{Dir.pwd}> " << cmd)
+      Fabio::Logger::log(("#{Dir.pwd}> " << cmd), :type => :exec)
       status = block_cmd(cmd) do |pout, perr, pin, pid|
         err = perr.read
         stdout = pout.read
       end
 
-      puts "STDOUT:  #{stdout}" unless stdout.empty?
-      puts "STDERR:  #{err}" unless err.empty?
+      Fabio::Logger::log(err, :type => :stderr) unless err.empty?
+      Fabio::Logger::log(stdout, :type => :stdout) unless stdout.empty?
 
       info = {
         :pid => status.pid,
@@ -68,13 +67,14 @@ module Executor
         :stdout => stdout,
         :status => status.exitstatus
       }
+
       if !status.success?
         raise ExecutionError, info
       end
 
-      return info
+      info
      rescue Exception => e
-       p e
+       Fabio::Logger::log("Exception thrown: #{e}", :type => :warn)
        raise e
     end
   end
