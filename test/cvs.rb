@@ -12,6 +12,13 @@ env = {
     :path => 'testytest',
     :working_dir => './temp', # optional
   },
+  :exec => [
+    {
+      :type => 'ant',
+      :working_dir => './temp/testytest',
+      :args => '-version',
+    }
+  ],
   :report => true,
 }
 

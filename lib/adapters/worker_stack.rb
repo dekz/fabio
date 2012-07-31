@@ -27,7 +27,6 @@ class WorkerStack
       end
 
     end
-    env[:out].rewind
     env
   end
 end

@@ -1,5 +1,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib/fabio')
 
+FileUtils.rm_rf('./temp')
 env = {
   :version => 0.1,
   :cmd => [
