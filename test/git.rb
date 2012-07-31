@@ -48,5 +48,10 @@ env = {
   :report => true,
 }
 
+begin
 fabio = Fabio::Worker.new
 fabio.call env
+rescue Exception => e
+  puts e
+  puts e.backtrace
+end
