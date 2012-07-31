@@ -1,7 +1,10 @@
+require 'rspec/core/rake_task'
 task :default => [:test]
 task 'test' do
   begin
-    load './test/test.rb'
+    RSpec::Core::RakeTask.new do |t|
+      t.pattern = "*.rb"
+    end
   rescue Exception => e
     p e
   end
