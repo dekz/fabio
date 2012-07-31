@@ -13,12 +13,16 @@ module Executor
 
   def fexec args, dir=nil
     resp = nil
+    who_called = caller[0]
     exec_in_dir dir do
+      # Call a block exec and yield pipes if block given
       return block_cmd(args) do |o,e,i,d|
-        puts "#{d} >> #{caller[0]}\n"
+        Fabio::Logger::log "$ #{args}", :type => :exec
+        Fabio::Logger::log "#{d} >> #{who_called}\n", :type => :exec
         yield o,e,i,d
       end if block_given?
 
+      # no block given, do a default reading stdout and stderr
       resp =  default_cmd args
     end
     resp

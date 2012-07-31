@@ -31,6 +31,7 @@ module Executor
       status = fexec(cmd, args[:working_dir]) do |pout,perr,pin,pid|
         env[:out] << pout.read
       end
+      raise Executor::ExecutionError, status if status.exitstatus != 0
     end
 
     def rvm_prefix env

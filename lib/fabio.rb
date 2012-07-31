@@ -13,7 +13,7 @@ module Fabio
 
   module Logger
     def log(msg, type={:type => 'info'})
-      puts "#{type[:type]}: #{msg}"
+      puts "[#{type[:type]}] #{msg}"
     end
     module_function :log
   end
@@ -34,12 +34,15 @@ module Fabio
         use Reporters
       end
 
+      log env
+
       io = StringIO.new
       env = { :env => env, :out => io }
+      
       stack.call env
+
       env[:out].rewind
-      p env
-      puts "Out: #{env[:out].read}"
+      log "Out: #{env[:out].read}"
     end
   end
 end
