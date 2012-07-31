@@ -2,18 +2,21 @@
 # Fabio
 Middleware build worker.
 
+
 # Current Stack
-Commands
-Environments
-Repositories
-Executors
-Reporters
+```
+  Commands  
+  Environments
+  Repositories
+  Executors
+  Reporters
+```
 
 # Adding a new middleware
 Some of the parent middlewares (Commands) also use middlewares (commands/ping.rb). Allowing functionality to be quickly added. Simply respond to the env if needed.
 
 ## Example
-On the middleware chain Commands will also chain through its middlewares if the :cmd env is supplied.
+Let us take Commands as an example. Commands has also been implemented as a middlware, it's middleware all the way down. Any call to Fabio-Worker will pass through Commands, it will also pass through Ping and Info. It will pass through all included Middlewares, so only act if required. 
 ```
 # e.g env = { :cmd => :info }
 Stack
