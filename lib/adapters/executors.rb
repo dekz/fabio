@@ -47,10 +47,11 @@ module Executor
   # Default command executor, just print out stuff and
   # return an info object
   def default_cmd cmd
+    return if cmd.nil?
     return block_cmd(cmd) if block_given?
     begin
-      err = nil
-      stdout = nil
+      err = ''
+      stdout = ''
       Fabio::Logger::log(("#{Dir.pwd}> " << cmd), :type => :exec)
       status = block_cmd(cmd) do |pout, perr, pin, pid|
         err = perr.read
@@ -75,6 +76,7 @@ module Executor
       info
      rescue Exception => e
        Fabio::Logger::log("Exception thrown: #{e}", :type => :warn)
+       Fabio::Logger::log(e.backtrace.to_s, :type => :warn)
        raise e
     end
   end

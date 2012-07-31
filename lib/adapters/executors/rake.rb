@@ -35,11 +35,12 @@ module Executor
     end
 
     def rvm_prefix env
-      rvm_env = nil
+      rvm_env = []
       envs = env[:global][:environments]
       rvm_env = envs[:use] if envs.is_a?(Hash) && envs[:type] == 'rvm'
-      rvm_env ||= envs.select { |e| e[:type] == 'rvm' }.first[:use] unless envs.is_a? Hash
-      return '' unless rvm_env
+      rvm_env = envs.select { |e| e[:type] == 'rvm' } if envs.is_a? Array
+      return '' if rvm_env.size == 0
+      rvm_env = rvm_env.first[:use] unless envs.is_a? Hash
 
       rvm = CommandBuilder.new(:rvm)
       rvm << rvm_env

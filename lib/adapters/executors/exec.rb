@@ -1,6 +1,6 @@
 module Executor
   class DefaultExecutor
-    include Logger
+    include Fabio::Logger
     include Executor
 
     def initialize(app)
@@ -8,8 +8,7 @@ module Executor
     end
 
     def call(env)
-      log "I shall exec #{env[:exec]}" if env[:exec] == 'exec'
-      perform(env[:exec])
+      perform(env[:exec]) if env[:exec] == 'exec'
       @app.call(env)
     end
 

@@ -13,7 +13,8 @@ module Fabio
 
   module Logger
     def log(msg, type={:type => 'info'})
-      puts "[#{type[:type]}] #{msg}"
+      puts "[#{type}] #{msg}" if type.is_a? Symbol
+      puts "[#{type[:type]}] #{msg}" if type.is_a? Hash
     end
     module_function :log
   end
@@ -42,7 +43,8 @@ module Fabio
       stack.call env
 
       env[:out].rewind
-      log "Out: #{env[:out].read}"
+      log "Out: #{env[:out].read}", :debug
+      env
     end
   end
 end

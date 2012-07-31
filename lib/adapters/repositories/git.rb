@@ -11,11 +11,11 @@ module Repository
     end
 
     def call(env)
-      log :git_before, :type => :debug
+      log :git_before, :debug
       repos = env[:env]
       perform(repos) if repos[:type] == 'git'
       @app.call(env)
-      log :git_end, :type => :debug
+      log :git_end, :debug
     end
 
     def perform args
