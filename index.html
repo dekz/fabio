@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Fabio by dekz</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Fabio</h1>
+        <p>fabio</p>
+
+        <p class="view"><a href="https://github.com/dekz/fabio">View the Project on GitHub <small>dekz/fabio</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/dekz/fabio/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/dekz/fabio/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/dekz/fabio">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><a href="http://travis-ci.org/dekz/fabio"><img src="https://secure.travis-ci.org/dekz/fabio.png" alt="Build Status"></a></p>
+
+<h1>Fabio</h1>
+
+<p>Middleware build worker.</p>
+
+<h1>Current Stack</h1>
+
+<pre><code>  Commands  
+  Environments
+  Repositories
+  Executors
+  Reporters
+</code></pre>
+
+<h1>Adding a new middleware</h1>
+
+<p>Some of the parent middlewares (Commands) also use middlewares (commands/ping.rb). Allowing functionality to be quickly added. Simply respond to the env if needed.</p>
+
+<h2>Example</h2>
+
+<p>Let us take Commands as an example. Commands has also been implemented as a middlware, it's middleware all the way down. Any call to Fabio-Worker will pass through Commands, it will also pass through Ping and Info. It will pass through all included Middlewares, so only act if required. </p>
+
+<pre><code># e.g env = { :cmd =&gt; :info }
+Stack
+-&gt; Commands
+  -&gt; Ping 
+  -&gt; Info *responds*
+-&gt; Environment
+  -&gt; RVM
+  -&gt; Bundler
+-&gt; Repositories
+  -&gt; CVS
+  -&gt; Git
+-&gt; Executors
+  -&gt; Ant
+  -&gt; Rake
+-&gt; Reporters
+  -&gt; Reporter
+</code></pre>
+
+<p>Note: this the global stack example, a Top level stack may pass messages differently. (Not currently the case)</p>
+
+<h1>Why?</h1>
+
+<p>Main goal is to create a simple and extendable remote build system. One which can easily be executed on most platforms (ruby, or jruby).</p>
+
+<h1>Core concepts</h1>
+
+<p>Always #call on, never stop the chain early. Call with empty if required.<br>
+Default your arguments where it makes sense, use the most logical default choice (i.e git with no operation is checkout)  </p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/dekz">dekz</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
