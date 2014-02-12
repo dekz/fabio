@@ -44,3 +44,7 @@ Main goal is to create a simple and extendable remote build system. One which ca
 Always #call on, never stop the chain early. Call with empty if required.  
 Default your arguments where it makes sense, use the most logical default choice (i.e git with no operation is checkout)  
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dekz/fabio/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
